@@ -55,8 +55,13 @@ Running the script for reserving the area:
 ```
 ros2 run turtlebot3_multi_robot spawn.py 
 ```
+Testing the functionality in diiferent scenarios:
 
 https://github.com/user-attachments/assets/9560e6d0-295c-47f9-a194-e045a8d12125
+
+
+
+https://github.com/user-attachments/assets/c4b97bc5-324b-43f7-bdde-c9dacbe10545
 
 
 
