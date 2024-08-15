@@ -46,7 +46,11 @@ ros2 launch turtlebot3_multi_robot gazebo_multi_nav2_world.launch.py
 ```
 
 
-[three.webm](https://github.com/user-attachments/assets/97ac50bc-6281-464f-9f48-2ae6f4c0eb3a)
+
+
+https://github.com/user-attachments/assets/83071ee5-5f14-4a5a-99f0-39ac3d3b996b
+
+
 
 
 **References**: https://medium.com/@arshad.mehmood/a-guide-to-multi-robot-navigation-utilizing-turtlebot3-and-nav2-cd24f96d19c6
