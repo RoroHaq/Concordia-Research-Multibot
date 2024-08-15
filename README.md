@@ -41,12 +41,20 @@ Names and poses for the robots in nav2 example
  # …
  ]
 ```
+Running the main launch file:
 ```
 ros2 launch turtlebot3_multi_robot gazebo_multi_nav2_world.launch.py 
 ```
 
+Running the Formation creation script:
+```
+ros2 run turtlebot3_multi_robot goal_listener_and_saver.py 
+```
 
-
+Running the script for reserving the area:
+```
+ros2 run turtlebot3_multi_robot spawn.py 
+```
 
 https://github.com/user-attachments/assets/9560e6d0-295c-47f9-a194-e045a8d12125
 
