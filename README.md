@@ -41,18 +41,34 @@ Names and poses for the robots in nav2 example
  # …
  ]
 ```
+### Main Terminal
+
+First cd into turtlebot3_multi_robot
+```
+cd src/turtlebot3_multi_robot
+```
+Build the Files:
+```
+source /opt/ros/humble/setup.bash
+colcon build
+colcon test
+```
 Running the main launch file:
 ```
 ros2 launch turtlebot3_multi_robot gazebo_multi_nav2_world.launch.py 
 ```
 
+### 2nd Terminal
 Running the Formation creation script:
 ```
+#Follow the Build FIles step forom Main terminal
 ros2 run turtlebot3_multi_robot goal_listener_and_saver.py 
 ```
 
+### 3rd Terminal
 Running the script for reserving the area:
 ```
+#Follow the Build FIles step forom Main terminal
 ros2 run turtlebot3_multi_robot spawn.py 
 ```
 Testing the functionality in diiferent scenarios:
