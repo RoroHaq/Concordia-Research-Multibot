@@ -1,1 +1,1 @@
-gazebo_ros_pkgs;geometry_msgs;nav_msgs;rclcpp;rclpy;sensor_msgs;tf2;turtlebot3_navigation2;launch_ros;navigation2;nav2_common;slam_toolbox
+ros_gz_sim;ros_gz_interfaces;ros_gz_bridge;geometry_msgs;nav_msgs;rclcpp;rclpy;sensor_msgs;tf2;turtlebot3_navigation2;launch_ros;navigation2;nav2_common;slam_toolbox

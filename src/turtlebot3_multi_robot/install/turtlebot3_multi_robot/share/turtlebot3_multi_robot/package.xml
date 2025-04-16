@@ -10,7 +10,12 @@
   <license>Apache 2.0</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>
-  <depend>gazebo_ros_pkgs</depend>
+  <!-- <depend>gazebo_ros_pkgs</depend>     -->
+  
+  <depend>ros_gz_sim</depend>        
+  <depend>ros_gz_interfaces</depend> 
+  <depend>ros_gz_bridge</depend>
+
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
@@ -30,3 +35,5 @@
     <gazebo_ros gazebo_model_path="${prefix}/models"/>
   </export>
 </package>
+
+<!---->

@@ -83,18 +83,18 @@ def generate_launch_description():
         get_package_share_directory('turtlebot3_multi_robot'),
         'worlds', 'multi_empty_world.world')
 
-    gzserver_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')
-        ),
-        launch_arguments={'world': world}.items(),
-    )
+    # gzserver_cmd = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')
+    #     ),
+    #     launch_arguments={'world': world}.items(),
+    # )
 
-    gzclient_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzclient.launch.py')
-        ),
-    )
+    # gzclient_cmd = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource(
+    #         os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzclient.launch.py')
+    #     ),
+    # )
 
     gz_sim_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
@@ -165,7 +165,6 @@ def generate_launch_description():
     for robot in robots:
 
         namespace = [ '/' + robot['name'] ]
-
         # Create state publisher node for that instance
         turtlebot_state_publisher = Node(
             package='robot_state_publisher',
@@ -173,15 +172,15 @@ def generate_launch_description():
             executable='robot_state_publisher',
             output='screen',
             parameters=[{'use_sim_time': use_sim_time,
-                            'publish_frequency': 10.0}],
+                            'publish_frequency': 10.0,}],
             remappings=remappings,
             arguments=[urdf],
         )
 
         # Create spawn call
         spawn_turtlebot3_burger = Node(
-            package='gazebo_ros',
-            executable='spawn_entity.py',
+            package='ros_gz_sim',
+            executable='create',
             arguments=[
                 '-file', os.path.join(turtlebot3_multi_robot,'models', 'turtlebot3_' + TURTLEBOT3_MODEL, 'model.sdf'),
                 '-entity', robot['name'],
