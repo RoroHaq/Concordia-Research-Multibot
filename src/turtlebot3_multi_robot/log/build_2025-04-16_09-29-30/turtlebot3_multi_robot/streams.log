@@ -1,0 +1,32 @@
+[0.006s] Invoking command in '/home/safin/Documents/safin-research/Concordia-Research-Multibot/src/turtlebot3_multi_robot/build/turtlebot3_multi_robot': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/safin/Documents/safin-research/Concordia-Research-Multibot/src/turtlebot3_multi_robot -DCMAKE_INSTALL_PREFIX=/home/safin/Documents/safin-research/Concordia-Research-Multibot/src/turtlebot3_multi_robot/install/turtlebot3_multi_robot
+[0.154s] -- The C compiler identification is GNU 13.3.0
+[0.270s] -- The CXX compiler identification is GNU 13.3.0
+[0.294s] -- Detecting C compiler ABI info
+[0.408s] -- Detecting C compiler ABI info - done
+[0.422s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.422s] -- Detecting C compile features
+[0.423s] -- Detecting C compile features - done
+[0.436s] -- Detecting CXX compiler ABI info
+[0.547s] -- Detecting CXX compiler ABI info - done
+[0.555s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.555s] -- Detecting CXX compile features
+[0.556s] -- Detecting CXX compile features - done
+[0.562s] [31mCMake Error at CMakeLists.txt:11 (find_package):
+[0.562s]   By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project
+[0.562s]   has asked CMake to find a package configuration file provided by
+[0.562s]   "ament_cmake", but CMake did not find one.
+[0.562s] 
+[0.562s]   Could not find a package configuration file provided by "ament_cmake" with
+[0.562s]   any of the following names:
+[0.562s] 
+[0.562s]     ament_cmakeConfig.cmake
+[0.562s]     ament_cmake-config.cmake
+[0.562s] 
+[0.562s]   Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set
+[0.562s]   "ament_cmake_DIR" to a directory containing one of the above files.  If
+[0.562s]   "ament_cmake" provides a separate development package or SDK, be sure it
+[0.563s]   has been installed.
+[0.563s] 
+[0.563s] [0m
+[0.563s] -- Configuring incomplete, errors occurred!
+[0.564s] Invoked command in '/home/safin/Documents/safin-research/Concordia-Research-Multibot/src/turtlebot3_multi_robot/build/turtlebot3_multi_robot' returned '1': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/safin/Documents/safin-research/Concordia-Research-Multibot/src/turtlebot3_multi_robot -DCMAKE_INSTALL_PREFIX=/home/safin/Documents/safin-research/Concordia-Research-Multibot/src/turtlebot3_multi_robot/install/turtlebot3_multi_robot
