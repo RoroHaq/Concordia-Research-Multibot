@@ -9,7 +9,14 @@ The 'master' branch includes an implementation that functions with the humble fr
 'foxy' -> ROS2 Foxy
 
 The code in the "foxy" branch is compatible with ROS2 humble. In the master branch, there is an updated launch file for bringing up nav2 with composite nodes. However, the creation of composite nodes is currently disabled due to an issue in the ROS2 humble implementation. This issue pertains to the propagation of namespace mapping to nodes (in composite container) with sub-namespaces, such as "/global_costmap/global_costmap".
+## Setup for Jazzy
 
+1.set up environment variable GZ_SIM_RESOURCE_PATH to hold the location to your models path inside ~/.bashrc or equivalent
+```
+export GZ_SIM_RESOURCE_PATH=path/to/models
+```
+
+When that is done, isnide the project models folder, copy the individual directories over to that path/to/models (don't remove them from the original project)
 ## Run without nav2 stack
 ```
 ros2 launch turtlebot3_multi_robot gazebo_multi_world.launch.py 
