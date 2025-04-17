@@ -155,9 +155,10 @@
     <collision>
       <origin xyz="0 0.001 0" rpy="0 0 0"/>
       <geometry>
-          <sphere>
+        <sphere radius='0.035000'/>
+          <!-- <sphere>
             <radius>0.035000</radius>
-          </sphere>
+          </sphere> -->
       </geometry>
     </collision>
 
@@ -180,9 +181,10 @@
     <collision>
       <origin xyz="0 0.001 0" rpy="0 0 0"/>
       <geometry>
-          <sphere>
+        <sphere radius="0.035000"/>
+          <!-- <sphere>
             <radius>0.035000</radius>
-          </sphere>
+          </sphere> -->
       </geometry>
     </collision>
 
