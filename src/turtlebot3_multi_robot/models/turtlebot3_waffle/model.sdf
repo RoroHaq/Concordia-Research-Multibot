@@ -501,13 +501,22 @@
         <xyz>0 0 1</xyz>
       </axis>
     </joint>
-    <joint name="lidar_cuboid_joint" type="revolute">
+    <!-- <joint name="lidar_cuboid_joint" type="revolute">
       <origin xyz="0 0 0.05" rpy="0 0 0"/>
-      <parent link="base_scan"/>
-      <child link="lidar_cuboid_link"/>
-      <axis xyz="0 1 0"/>
+      <pose>0 0 0.05 0 0 0"</pose>
+      <parent>base_scan</parent>
+      <child>lidar_cuboid_joint</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <effort>1</effort>
+          <lower>0</lower>
+          <upper>1.57</upper>
+          <velocity>1</velocity>
+        </limit>
+      </axis>
       <limit effort="1" lower="0" upper="1.57" velocity="1"/>
-    </joint>
+    </joint> -->
 
     <plugin name="turtlebot3_diff_drive" filename="libgazebo_ros_diff_drive.so">
 
