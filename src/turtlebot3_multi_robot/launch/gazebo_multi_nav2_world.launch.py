@@ -79,9 +79,15 @@ def generate_launch_description():
         turtlebot3_multi_robot, 'urdf', 'turtlebot3_' + TURTLEBOT3_MODEL + '.urdf'
     )
 
-    world = os.path.join(
-        get_package_share_directory('turtlebot3_multi_robot'),
-        'worlds', 'multi_empty_world.world')
+    # world = os.path.join(
+    #     get_package_share_directory('turtlebot3_multi_robot'),
+    #     'worlds', 'multi_empty_world.world')
+
+    world = PathJoinSubstitution([
+        FindPackageShare('turtlebot3_multi_robot'),
+        'worlds',
+        'multi_empty_world.world'
+    ])
 
     # gzserver_cmd = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(
@@ -104,7 +110,7 @@ def generate_launch_description():
                 'gz_sim.launch.py'
             ])
         ]),
-        launch_arguments={'world' : f'-r {world}'}.items(),
+        launch_arguments={'gz_args' : {world}}.items(),
     )
 
     params_file = LaunchConfiguration('nav_params_file')
