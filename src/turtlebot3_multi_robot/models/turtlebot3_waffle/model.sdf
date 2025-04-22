@@ -44,6 +44,7 @@
       <sensor name="tb3_imu" type="imu">
         <always_on>true</always_on>
         <update_rate>200</update_rate>
+        <topic>imu</topic>
         <imu>
           <angular_velocity>
             <x>
@@ -86,12 +87,12 @@
             </z>
           </linear_acceleration>
         </imu>
-        <plugin name="turtlebot3_imu" filename="libgazebo_ros_imu_sensor.so">
+        <!-- <plugin name="turtlebot3_imu" filename="libgazebo_ros_imu_sensor.so">
           <ros>
-            <!-- <namespace>/tb3</namespace> -->
+            <namespace>/tb3</namespace>
             <remapping>~/out:=imu</remapping>
           </ros>
-        </plugin>
+        </plugin> -->
       </sensor>
     </link>
 
@@ -134,6 +135,7 @@
         <visualize>false</visualize>
         <pose>-0.064 0 0.121 0 0 0</pose>
         <update_rate>5</update_rate>
+        <topic>scan</topic>
         <ray>
           <scan>
             <horizontal>
@@ -154,14 +156,14 @@
             <stddev>0.01</stddev>
           </noise>
         </ray>
-        <plugin name="turtlebot3_laserscan" filename="libgazebo_ros_ray_sensor.so">
+        <!-- <plugin name="turtlebot3_laserscan" filename="libgazebo_ros_ray_sensor.so">
           <ros>
-            <!-- <namespace>/tb3</namespace> -->
+            <namespace>/tb3</namespace>
             <remapping>~/out:=scan</remapping>
           </ros>
           <output_type>sensor_msgs/LaserScan</output_type>
           <frame_name>base_scan</frame_name>
-        </plugin>
+        </plugin> -->
       </sensor>
     </link>
 
@@ -374,6 +376,7 @@
         <always_on>true</always_on>
         <visualize>true</visualize>
         <update_rate>1</update_rate>
+        <topic>camera/image_raw</topic>
         <camera name="intel_realsense_r200">
            <horizontal_fov>1.02974</horizontal_fov>
           <image>
@@ -392,14 +395,14 @@
             <stddev>0.007</stddev>
           </noise>
         </camera>
-          <plugin name="camera_driver" filename="libgazebo_ros_camera.so">
+          <!-- <plugin name="camera_driver" filename="libgazebo_ros_camera.so">
             <ros>
             </ros>
           <frame_name>camera_rgb_frame</frame_name>
           <min_depth>0.1</min_depth>
           <max_depth>100</max_depth>
 
-          </plugin>
+          </plugin> -->
       </sensor>
     </link>
 
@@ -518,10 +521,10 @@
       <limit effort="1" lower="0" upper="1.57" velocity="1"/>
     </joint> -->
 
-    <plugin name="turtlebot3_diff_drive" filename="libgazebo_ros_diff_drive.so">
+    <!-- <plugin name="turtlebot3_diff_drive" filename="libgazebo_ros_diff_drive.so">
 
       <ros>
-        <!-- <namespace>/robot0</namespace> -->
+        <namespace>/robot0</namespace>
         <remapping>/tf:=tf</remapping>
       </ros>
 
@@ -545,7 +548,33 @@
       <odometry_frame>odom</odometry_frame>
       <robot_base_frame>base_footprint</robot_base_frame>
 
+    </plugin> -->
+
+    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+      <!-- Remove <ros> tag. -->
+    
+      <!-- wheels -->
+      <left_joint>wheel_left_joint</left_joint>
+      <right_joint>wheel_right_joint</right_joint>
+    
+      <!-- kinematics -->
+      <wheel_separation>0.287</wheel_separation>
+      <wheel_radius>0.033</wheel_radius> <!-- computed from <wheel_diameter> in the original plugin-->
+    
+      <!-- limits -->
+      <max_linear_acceleration>0.033</max_linear_acceleration> <!-- computed from <max_linear_acceleration> in the original plugin-->
+    
+      <topic>cmd_vel</topic> <!-- from <commant_topic> -->
+    
+      <odom_topic>odom</odom_topic> <!-- from <odometry_topic> -->
+      <frame_id>odom</frame_id> <!-- from <odometry_frame> -->
+      <child_frame_id>base_footprint</child_frame_id> <!-- from <robot_base_frame> -->
+      <odom_publisher_frequency>30</odom_publisher_frequency> <!-- from <update_rate>-->
+    
+      <tf_topic>/tf</tf_topic> <!-- Short topic name for tf output -->
+    
     </plugin>
+
 
     <!-- <plugin name="turtlebot3_joint_state" filename="libgazebo_ros_joint_state_publisher.so">
       <ros>

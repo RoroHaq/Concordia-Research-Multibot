@@ -1,9 +1,69 @@
 <?xml version="1.0"?>
 <sdf version="1.6">
   <world name="my_world">
+    <plugin
+        filename="gz-sim-physics-system"
+        name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+        filename="gz-sim-user-commands-system"
+        name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+        filename="gz-sim-scene-broadcaster-system"
+        name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+        filename="gz-sim-sensors-system"
+        name="gz::sim::systems::Sensors">
+    <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin
+        filename="gz-sim-imu-system"
+        name="gz::sim::systems::Imu">
+    </plugin>
+    <gravity>0 0 -9.8</gravity>
+    <model name="ground_plane">
+      <static>1</static>
+      <link name="link">
+          <collision name="collision">
+              <geometry>
+                  <plane>
+                      <normal>0 0 1</normal>
+                      <size>100 100</size>
+                  </plane>
+              </geometry>
+              <surface>
+                  <contact>
+                      <collide_bitmask>65535</collide_bitmask>
+                  </contact>
+                  <friction>
+                      <ode>
+                          <mu>100</mu>
+                          <mu2>50</mu2>
+                      </ode>
+                  </friction>
+                  <bounce/>
+              </surface>
+              <max_contacts>10</max_contacts>
+          </collision>
+          <visual name="visual">
+              <cast_shadows>0</cast_shadows>
+              <geometry>
+                  <plane>
+                      <normal>0 0 1</normal>
+                      <size>100 100</size>
+                  </plane>
+              </geometry>
+          </visual>
+          <self_collide>0</self_collide>
+          <enable_wind>0</enable_wind>
+          <kinematic>0</kinematic>
+      </link>
+  </model>
     <include>
       <uri>model://floor_plan</uri>
-      <pose>0 0 0 0 0 0</pose>
+      <pose>0 0 1.25 0 -0 0</pose>
     </include>
     <include>
       <uri>model://sun</uri>
