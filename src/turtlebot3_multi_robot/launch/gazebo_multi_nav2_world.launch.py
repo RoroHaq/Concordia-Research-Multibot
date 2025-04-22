@@ -89,29 +89,30 @@ def generate_launch_description():
         'multi_empty_world.world'
     ])
 
-    # gzserver_cmd = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')
-    #     ),
-    #     launch_arguments={'world': world}.items(),
-    # )
-
-    # gzclient_cmd = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzclient.launch.py')
-    #     ),
-    # )
-
-    gz_sim_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            PathJoinSubstitution([
-                FindPackageShare('ros_gz_sim'),
-                'launch',
-                'gz_sim.launch.py'
-            ])
-        ]),
-        launch_arguments={'gz_args' : {world}}.items(),
+    gzserver_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
+        ),
+        launch_arguments={'gz_args': ['-r -s -v4 ', world], 'on_exit_shutdown': 'true'}.items()
     )
+
+    gzclient_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
+        ),
+        launch_arguments={'gz_args': '-g -v4 '}.items()
+    )
+
+    # gz_sim_cmd = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource([
+    #         PathJoinSubstitution([
+    #             FindPackageShare('ros_gz_sim'),
+    #             'launch',
+    #             'gz_sim.launch.py'
+    #         ])
+    #     ]),
+    #     launch_arguments={'gz_args' : {world}}.items(),
+    # )
 
     params_file = LaunchConfiguration('nav_params_file')
     declare_params_file_cmd = DeclareLaunchArgument(
@@ -125,9 +126,9 @@ def generate_launch_description():
     ld.add_action(declare_enable_rviz)
     ld.add_action(declare_rviz_config_file_cmd)
     ld.add_action(declare_params_file_cmd)
-    ld.add_action(gz_sim_cmd)
-    # ld.add_action(gzserver_cmd)
-    # ld.add_action(gzclient_cmd)
+    # ld.add_action(gz_sim_cmd)
+    ld.add_action(gzserver_cmd)
+    ld.add_action(gzclient_cmd)
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static')]
     # map_server=Node(package='nav2_map_server',
@@ -169,7 +170,7 @@ def generate_launch_description():
     last_action = None
     # Spawn turtlebot3 instances in gazebo
     for robot in robots:
-
+        print(robot)
         namespace = [ '/' + robot['name'] ]
         # Create state publisher node for that instance
         turtlebot_state_publisher = Node(
@@ -194,6 +195,7 @@ def generate_launch_description():
                 '-x', robot['x_pose'], '-y', robot['y_pose'],
                 '-z', '0.01', '-Y', '0.0',
                 '-unpause',
+                '--allow_renaming', 'true',
             ],
             output='screen',
         )
@@ -210,7 +212,7 @@ def generate_launch_description():
                                     'params_file': params_file,
                                     'default_bt_xml_filename': os.path.join(
                                         get_package_share_directory('nav2_bt_navigator'),
-                                        'behavior_trees', 'navigate_w_replanning_and_recovery.xml'),
+                                        'behavior_trees', f'navigate_w_replanning_and_recovery.xml'),
                                     'autostart': 'true',
                                     'use_sim_time': use_sim_time, 'log_level': 'warn'}.items()
                                     )
@@ -242,7 +244,7 @@ def generate_launch_description():
     ######################
     # Start rviz nodes and drive nodes after the last robot is spawned
     for robot in robots:
-
+        print(robot)
         namespace = [ '/' + robot['name'] ]
 
         # Create a initial pose topic publish call
