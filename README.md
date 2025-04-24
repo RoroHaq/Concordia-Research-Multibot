@@ -2,19 +2,36 @@
 ## Multiple Turtlebot3 robot support in Gazebo
 The ROS2 project  scalable solution for launching multiple TurtleBot3 robots with navigation capabilities using the Navigation2 (Nav2) stack. By leveraging namespaces in ROS2, this project enables the seamless deployment of multiple TurtleBot3 robots in a simple and organized manner. Each robot instance can be differentiated by its unique namespace, ensuring independence and preventing naming conflicts.
 
-The 'master' branch includes an implementation that functions with the humble framework
+The 'main' branch includes an implementation that functions with the humble framework
 
-'master' -> ROS2 Humble
+'main' -> ROS2 Humble
 ```
 mkdir -p robot_ws/src
 cd robot_ws/src
 
-# For Humble use master branch
-git clone  git@github.com:AradHajari/Concordia-Research-Multibot.git -b master
+# For Humble use main branch
+git clone  git@github.com:AradHajari/Concordia-Research-Multibot.git
+
+# cloning with https
+git clone https://github.com/AradHajari/Concordia-Research-Multibot.git
 
 cd robot_ws
 source /opt/ros/humble/setup.bash
 rosdep install --from-paths src -r -y
+```
+
+## Setup Models
+In order to properly run the world, you will need to copy the models in your .gazebo/models folder
+
+```
+#In turtlebot3_multi_robot directory
+cp -r models/* /home/[user]/.gazebo/models
+```
+
+this is so that it can read the:
+
+```
+<uri>model://path/to/model</uri>
 ```
 ## Run without nav2 stack
 ```
@@ -52,6 +69,7 @@ Build the Files:
 source /opt/ros/humble/setup.bash
 colcon build
 colcon test
+source install/setup.bash
 ```
 Running the main launch file:
 ```
@@ -61,7 +79,7 @@ ros2 launch turtlebot3_multi_robot gazebo_multi_nav2_world.launch.py
 ### 2nd Terminal
 Running the Formation creation script:
 ```
-#Follow the Build FIles step forom Main terminal
+#Follow the Build Files step forom Main terminal
 ros2 run turtlebot3_multi_robot goal_listener_and_saver.py 
 ```
 
