@@ -99,21 +99,32 @@ def generate_launch_description():
     #                  },],
     #     remappings=remappings)
 
-    
-    nav2_bringup = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            get_package_share_directory('nav2_bringup'),
-            'launch',
-            'navigation_launch.py'
-        )
+    navigation_launch_path = os.path.join(
+        get_package_share_directory('nav2_bringup'),
+        'launch',
+        'navigation_launch.py'
     )
-
+    nav2_params = os.path.join(
+        get_package_share_directory('turtlebot3_multi_robot'),
+        'params',
+        'nav2_params.yaml'
+    )
+    nav2_bringup = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(navigation_launch_path),
+        launch_arguments={
+            'use_sim_time' : 'true',
+            'params_file' : nav2_params
+        }.items()
+    )
+    
+    async_launch_path = os.path.join(
+        get_package_share_directory('slam_toolbox'),
+        'launch',
+        'online_async_launch.py'
+    )
+    print('SLAM:' + navigation_launch_path)
     slam_tool_box = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            get_package_share_directory('slam_toolbox'),
-            'launch',
-            'online_async_launch.py'
-        ),
+        PythonLaunchDescriptionSource(async_launch_path),
         launch_arguments={'use_sim_time': 'true'}.items()
     )
 
@@ -151,13 +162,24 @@ def generate_launch_description():
         output='screen',
     )
 
-
+    rviz_config_path = os.path.join(
+        get_package_share_directory('turtlebot3_multi_robot'),
+        'rviz',
+        'nav2_default_view.rviz'
+    )
+    print(rviz_config_path)
+    rviz_startup = Node(
+        package='rviz2',
+        executable='rviz2',
+        arguments=['-d', rviz_config_path],
+        output='screen',
+    )
     
 
             # Call add_action directly for the first robot to facilitate chain instantiation via RegisterEventHandler
     ld.add_action(turtlebot_state_publisher)
     ld.add_action(spawn_turtlebot3_burger)
-
+    ld.add_action(rviz_startup)
     
     ######################
     return ld
