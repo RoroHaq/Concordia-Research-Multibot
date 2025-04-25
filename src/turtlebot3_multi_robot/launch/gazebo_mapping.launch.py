@@ -109,6 +109,7 @@ def generate_launch_description():
         'params',
         'nav2_params.yaml'
     )
+
     nav2_bringup = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(navigation_launch_path),
         launch_arguments={
@@ -122,15 +123,12 @@ def generate_launch_description():
         'launch',
         'online_async_launch.py'
     )
-    print('SLAM:' + navigation_launch_path)
+
     slam_tool_box = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(async_launch_path),
         launch_arguments={'use_sim_time': 'true'}.items()
     )
 
-
-    ld.add_action(nav2_bringup)
-    ld.add_action(slam_tool_box)
     ######################
 
     # Remapping is required for state publisher otherwise /tf and /tf_static 
@@ -161,25 +159,48 @@ def generate_launch_description():
         ],
         output='screen',
     )
-
     rviz_config_path = os.path.join(
         get_package_share_directory('turtlebot3_multi_robot'),
         'rviz',
         'nav2_default_view.rviz'
     )
-    print(rviz_config_path)
     rviz_startup = Node(
         package='rviz2',
         executable='rviz2',
         arguments=['-d', rviz_config_path],
         output='screen',
     )
+
+    slam_event = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=spawn_turtlebot3_burger,
+            on_exit=[ExecuteProcess(
+                
+            )]
+        )
+    )
+
+    nav2_event = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=slam_tool_box,
+            on_exit=[nav2_bringup]
+        )
+    )
+
+    rviz_event = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=nav2_bringup,
+            on_exit=[rviz_startup]
+        )
+    )
+    
     
 
             # Call add_action directly for the first robot to facilitate chain instantiation via RegisterEventHandler
     ld.add_action(turtlebot_state_publisher)
     ld.add_action(spawn_turtlebot3_burger)
-    ld.add_action(rviz_startup)
-    
+    ld.add_action(slam_event)
+    ld.add_action(nav2_event)
+    ld.add_action(rviz_event)
     ######################
     return ld

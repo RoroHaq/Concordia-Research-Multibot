@@ -83,29 +83,29 @@ def generate_launch_description():
         get_package_share_directory('turtlebot3_multi_robot'),
         'worlds', 'multi_empty_world.world')
 
-    # gzserver_cmd = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')
-    #     ),
-    #     launch_arguments={'world': world}.items(),
-    # )
-
-    # gzclient_cmd = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(
-    #         os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzclient.launch.py')
-    #     ),
-    # )
-
-    gz_sim_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            PathJoinSubstitution([
-                FindPackageShare('ros_gz_sim'),
-                'launch',
-                'gz_sim.launch.py'
-            ])
-        ]),
-        launch_arguments={'world' : f'-r {world}'}.items(),
+    gzserver_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')
+        ),
+        launch_arguments={'world': world}.items(),
     )
+
+    gzclient_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzclient.launch.py')
+        ),
+    )
+
+    # gz_sim_cmd = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource([
+    #         PathJoinSubstitution([
+    #             FindPackageShare('ros_gz_sim'),
+    #             'launch',
+    #             'gz_sim.launch.py'
+    #         ])
+    #     ]),
+    #     launch_arguments={'world' : f'-r {world}'}.items(),
+    # )
 
     params_file = LaunchConfiguration('nav_params_file')
     declare_params_file_cmd = DeclareLaunchArgument(
@@ -119,9 +119,9 @@ def generate_launch_description():
     ld.add_action(declare_enable_rviz)
     ld.add_action(declare_rviz_config_file_cmd)
     ld.add_action(declare_params_file_cmd)
-    ld.add_action(gz_sim_cmd)
-    # ld.add_action(gzserver_cmd)
-    # ld.add_action(gzclient_cmd)
+    # ld.add_action(gz_sim_cmd)
+    ld.add_action(gzserver_cmd)
+    ld.add_action(gzclient_cmd)
     remappings = [('/tf', 'tf'),
                   ('/tf_static', 'tf_static')]
     # map_server=Node(package='nav2_map_server',
@@ -179,8 +179,8 @@ def generate_launch_description():
 
         # Create spawn call
         spawn_turtlebot3_burger = Node(
-            package='ros_gz_sim',
-            executable='create',
+            package='gazebo_ros',
+            executable='spawn_entity.py',
             arguments=[
                 '-file', os.path.join(turtlebot3_multi_robot,'models', 'turtlebot3_' + TURTLEBOT3_MODEL, 'model.sdf'),
                 '-entity', robot['name'],
