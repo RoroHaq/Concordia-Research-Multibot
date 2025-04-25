@@ -32,7 +32,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Names and poses of the robots
-    robot = {'name': 'tb1', 'x_pose': '-1.5', 'y_pose': '0', 'z_pose': 0.01}
+    robot = {'name': 'tb1', 'x_pose': '10', 'y_pose': '0', 'z_pose': 0.01}
 
     TURTLEBOT3_MODEL = 'waffle'
 
@@ -67,7 +67,7 @@ def generate_launch_description():
 
     world = os.path.join(
         get_package_share_directory('turtlebot3_multi_robot'),
-        'worlds', 'multi_empty_world.world')
+        'worlds', 'ev9_floor_plan_world.world')
 
     gzserver_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -91,8 +91,6 @@ def generate_launch_description():
     ld.add_action(gzserver_cmd)
     ld.add_action(gzclient_cmd)
 
-    remappings = [('/tf', 'tf'),
-                  ('/tf_static', 'tf_static')]
     # map_server=Node(package='nav2_map_server',
     #     executable='map_server',
     #     name='map_server',
@@ -102,7 +100,26 @@ def generate_launch_description():
     #     remappings=remappings)
 
     
+    nav2_bringup = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            get_package_share_directory('nav2_bringup'),
+            'launch',
+            'navigation_launch.py'
+        )
+    )
 
+    slam_tool_box = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            get_package_share_directory('slam_toolbox'),
+            'launch',
+            'online_async_launch.py'
+        ),
+        launch_arguments={'use_sim_time': 'true'}.items()
+    )
+
+
+    ld.add_action(nav2_bringup)
+    ld.add_action(slam_tool_box)
     ######################
 
     # Remapping is required for state publisher otherwise /tf and /tf_static 
@@ -110,7 +127,6 @@ def generate_launch_description():
     # remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
 
     # Spawn turtlebot3 instances in gazebo
-    namespace = [ '/' + robot['name'] ]
         # Create state publisher node for that instance
     turtlebot_state_publisher = Node(
         package='robot_state_publisher',
@@ -134,6 +150,7 @@ def generate_launch_description():
         ],
         output='screen',
     )
+
 
     
 
