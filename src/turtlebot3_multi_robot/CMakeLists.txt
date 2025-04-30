@@ -33,7 +33,6 @@ install(DIRECTORY config/
 )
 install(PROGRAMS
   scripts/goal_listener_and_sender.py
-  scripts/monitor_position.py
   scripts/spawn.py
   DESTINATION lib/${PROJECT_NAME}
 )

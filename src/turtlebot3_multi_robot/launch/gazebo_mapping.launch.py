@@ -20,7 +20,7 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, RegisterEventHandler
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch.actions import IncludeLaunchDescription, ExecuteProcess
+from launch.actions import IncludeLaunchDescription, ExecuteProcess, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -99,36 +99,7 @@ def generate_launch_description():
     #                  },],
     #     remappings=remappings)
 
-    navigation_launch_path = os.path.join(
-        get_package_share_directory('nav2_bringup'),
-        'launch',
-        'navigation_launch.py'
-    )
-    nav2_params = os.path.join(
-        get_package_share_directory('turtlebot3_multi_robot'),
-        'params',
-        'nav2_params.yaml'
-    )
-
-    nav2_bringup = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(navigation_launch_path),
-        launch_arguments={
-            'use_sim_time' : 'true',
-            'params_file' : nav2_params
-        }.items()
-    )
     
-    async_launch_path = os.path.join(
-        get_package_share_directory('slam_toolbox'),
-        'launch',
-        'online_async_launch.py'
-    )
-
-    slam_tool_box = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(async_launch_path),
-        launch_arguments={'use_sim_time': 'true'}.items()
-    )
-
     ######################
 
     # Remapping is required for state publisher otherwise /tf and /tf_static 
@@ -159,6 +130,48 @@ def generate_launch_description():
         ],
         output='screen',
     )
+
+    navigation_launch_path = os.path.join(
+        get_package_share_directory('nav2_bringup'),
+        'launch',
+        'navigation_launch.py'
+    )
+    nav2_params = os.path.join(
+        get_package_share_directory('turtlebot3_multi_robot'),
+        'params',
+        'nav2_params.yaml'
+    )
+
+    nav2_bringup = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(navigation_launch_path),
+        launch_arguments={
+            'use_sim_time' : 'true',
+            'params_file' : nav2_params
+        }.items()
+    )
+
+    delayed_nav = TimerAction(
+        period=15.0,
+        actions=[nav2_bringup]
+    )
+    
+    async_launch_path = os.path.join(
+        get_package_share_directory('slam_toolbox'),
+        'launch',
+        'online_async_launch.py'
+    )
+
+    slam_tool_box = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(async_launch_path),
+        launch_arguments={'use_sim_time': 'true'}.items()
+    )
+
+    delayed_slam = TimerAction(
+        period=15.0,
+        actions=[slam_tool_box]
+    )
+
+
     rviz_config_path = os.path.join(
         get_package_share_directory('turtlebot3_multi_robot'),
         'rviz',
@@ -171,36 +184,13 @@ def generate_launch_description():
         output='screen',
     )
 
-    slam_event = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=spawn_turtlebot3_burger,
-            on_exit=[ExecuteProcess(
-                
-            )]
-        )
-    )
 
-    nav2_event = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=slam_tool_box,
-            on_exit=[nav2_bringup]
-        )
-    )
-
-    rviz_event = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=nav2_bringup,
-            on_exit=[rviz_startup]
-        )
-    )
-    
-    
 
             # Call add_action directly for the first robot to facilitate chain instantiation via RegisterEventHandler
     ld.add_action(turtlebot_state_publisher)
     ld.add_action(spawn_turtlebot3_burger)
-    ld.add_action(slam_event)
-    ld.add_action(nav2_event)
-    ld.add_action(rviz_event)
+    ld.add_action(delayed_nav)
+    ld.add_action(delayed_slam)
+    ld.add_action(rviz_startup)
     ######################
     return ld
