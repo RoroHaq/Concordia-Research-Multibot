@@ -33,14 +33,14 @@ def generate_launch_description():
 
     # Names and poses of the robots
     robots = [
-        {'name': 'tb1', 'x_pose': '-1.5', 'y_pose': '0', 'z_pose': 0.01},
-        {'name': 'tb2', 'x_pose': '-0.5', 'y_pose': '1', 'z_pose': 0.01},
-        {'name': 'tb3', 'x_pose': '-2.5', 'y_pose': '-1', 'z_pose': 0.01},
-        {'name': 'tb4', 'x_pose': '-0.5', 'y_pose': '-1', 'z_pose': 0.01},
-        {'name': 'tb5', 'x_pose': '-2.5', 'y_pose': '1', 'z_pose': 0.01},
+        {'name': 'tb1', 'x_pose': '10', 'y_pose': '0', 'z_pose': 0.01},
+        {'name': 'tb2', 'x_pose': '9', 'y_pose': '1', 'z_pose': 0.01},
+        {'name': 'tb3', 'x_pose': '11', 'y_pose': '-1', 'z_pose': 0.01},
+        {'name': 'tb4', 'x_pose': '9', 'y_pose': '-1', 'z_pose': 0.01},
+        {'name': 'tb5', 'x_pose': '11', 'y_pose': '1', 'z_pose': 0.01},
 
 
-        #{'name': 'tb4', 'x_pose': '1.5', 'y_pose': '0.5', 'z_pose': 0.01},
+        #{'name': 'tb4', 'x_pose': '10', 'y_pose': '0.5', 'z_pose': 0.01},
         # ...
         # ...
         ]
@@ -81,7 +81,7 @@ def generate_launch_description():
 
     world = os.path.join(
         get_package_share_directory('turtlebot3_multi_robot'),
-        'worlds', 'multi_empty_world.world')
+        'worlds', 'ev9_floor_plan_world.world')
 
     gzserver_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -137,7 +137,7 @@ def generate_launch_description():
             executable='map_server',
             name='map_server',
             output='screen',
-            parameters=[{'yaml_filename': os.path.join(get_package_share_directory('turtlebot3_multi_robot'), 'config', 'my_map.yaml'),}],  
+            parameters=[{'yaml_filename': os.path.join(get_package_share_directory('turtlebot3_multi_robot'), 'config', 'mapped_map.yaml'),}],  
             remappings=remappings
     )
         #map_file = os.path.join(get_package_share_directory('nav2_project'), 'config', 'turtlebot3_house.yaml')

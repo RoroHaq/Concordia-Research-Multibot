@@ -173,15 +173,20 @@ def generate_launch_description():
 
 
     rviz_config_path = os.path.join(
-        get_package_share_directory('turtlebot3_multi_robot'),
+        get_package_share_directory('nav2_bringup'),
         'rviz',
         'nav2_default_view.rviz'
     )
-    rviz_startup = Node(
+    rviz_node = Node(
         package='rviz2',
         executable='rviz2',
         arguments=['-d', rviz_config_path],
         output='screen',
+    )
+
+    rviz_delay = TimerAction(
+        period=10.0,
+        actions=[rviz_node]
     )
 
 
@@ -191,6 +196,6 @@ def generate_launch_description():
     ld.add_action(spawn_turtlebot3_burger)
     ld.add_action(delayed_nav)
     ld.add_action(delayed_slam)
-    ld.add_action(rviz_startup)
+    ld.add_action(rviz_delay)
     ######################
     return ld
