@@ -161,9 +161,15 @@ def generate_launch_description():
         'online_async_launch.py'
     )
 
+    params_file_path = os.path.join(
+    get_package_share_directory('turtlebot3_multi_robot'),
+    'params',
+    'mapper_params_online_async.yaml'
+    )
+
     slam_tool_box = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(async_launch_path),
-        launch_arguments={'use_sim_time': 'true'}.items()
+        launch_arguments={'use_sim_time': 'true', 'slam_params_file': params_file_path}.items()
     )
 
     delayed_slam = TimerAction(
