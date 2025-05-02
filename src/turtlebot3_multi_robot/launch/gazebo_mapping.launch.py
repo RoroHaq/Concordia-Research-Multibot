@@ -32,7 +32,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Names and poses of the robots
-    robot = {'name': 'tb1', 'x_pose': '10', 'y_pose': '0', 'z_pose': 0.01}
+    robot = {'name': 'tb1', 'x_pose': '0', 'y_pose': '0', 'z_pose': 0.01}
 
     TURTLEBOT3_MODEL = 'waffle'
 
