@@ -21,14 +21,13 @@ rosdep install --from-paths src -r -y
 ```
 
 ## Setup Models
-In order to properly run the world, you will need to copy the models in your .gazebo/models folder
+In order to properly run the world, you will need to copy the models in your .gazebo/models folder. Luckily I made a script for that for ease of use with the following command in the project root folder
 
 ```
-#In turtlebot3_multi_robot directory
-cp -r models/* /home/[user]/.gazebo/models
+source setup.bash
 ```
 
-this is so that it can read the:
+this is so that it can read the following found in sdf/world files:
 
 ```
 <uri>model://path/to/model</uri>
@@ -92,7 +91,6 @@ ros2 run turtlebot3_multi_robot spawn.py
 Testing the functionality in diiferent scenarios:
 
 https://github.com/user-attachments/assets/9560e6d0-295c-47f9-a194-e045a8d12125
-
 
 
 https://github.com/user-attachments/assets/c4b97bc5-324b-43f7-bdde-c9dacbe10545

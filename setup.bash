@@ -14,4 +14,8 @@ cp -r models/* $path
 
 echo "Model transfer done!"
 
+
+# Running the project
+
+
 cd ../../
