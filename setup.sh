@@ -4,4 +4,14 @@
 # the environment to work properly in your Humble/classic system.
 path="$HOME/.gazebo/models"
 
-echo $path
+echo "Starting model movement..."
+
+cd src/turtlebot3_multi_robot
+
+echo "Retrieving models..."
+
+cp -r models/* $path
+
+echo "Model transfer done!"
+
+cd ../../
