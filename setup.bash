@@ -16,7 +16,6 @@ echo "Model transfer done!"
 
 
 # Running the project
+gnome-terminal -- bash -c "colcon build; source install/setup.bash; ros2 launch turtlebot3_multi_robot gazebo_multi_nav2_world.launch.py; exec bash"
 
-
-konsole --hold -e bash -c "colcon build; source install/setup.bash; ros2 launch turtlebot3_multi_robot gazebo_multi_nav2_world.launch.py"
 cd ../../
