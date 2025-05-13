@@ -133,8 +133,9 @@ def generate_launch_description():
         'launch',
         'navigation_launch.py'
     )
+    #changed turtlebot3_multi_robot -> nav2_bringup
     nav2_params = os.path.join(
-        get_package_share_directory('turtlebot3_multi_robot'),
+        get_package_share_directory('nav2_bringup'),
         'params',
         'nav2_params.yaml'
     )
@@ -163,10 +164,10 @@ def generate_launch_description():
     'params',
     'mapper_params_online_async.yaml'
     )
-
+    # , 'slam_params_file': params_file_path
     slam_tool_box = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(async_launch_path),
-        launch_arguments={'use_sim_time': 'true', 'slam_params_file': params_file_path}.items()
+        launch_arguments={'use_sim_time': 'true'}.items()
     )
 
     delayed_slam = TimerAction(
