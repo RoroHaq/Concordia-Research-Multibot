@@ -45,7 +45,7 @@
 
     <include>
       <name>ev_9</name>
-      <uri>model://ev_9</uri>
+      <uri>model://floor_plan</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
 
