@@ -4,16 +4,15 @@ The ROS2 project  scalable solution for launching multiple TurtleBot3 robots wit
 
 The 'main' branch includes an implementation that functions with the humble framework
 
-'main' -> ROS2 Humble
 ```
 mkdir -p robot_ws/src
 cd robot_ws/src
 
-# For Humble use main branch
-git clone  git@github.com:AradHajari/Concordia-Research-Multibot.git
+# cloning via https
+git clone https://github.com/RoroHaq/Concordia-Research-Multibot.git
 
-# cloning with https
-git clone https://github.com/AradHajari/Concordia-Research-Multibot.git
+# cloning via ssh
+git clone  git@github.com:RoroHaq/Concordia-Research-Multibot.git
 
 cd robot_ws
 source /opt/ros/humble/setup.bash
@@ -57,6 +56,25 @@ Names and poses for the robots in nav2 example
  # …
  ]
 ```
+
+There are 2 ways to run this project, via manually making 3 separate terminals, or running the bash script I have created.
+
+## Script Version
+
+1. Go to the root of the repo, where the bash files are.
+2. Afterwards you run the following command, depending on if you want the EV9 or the Empty world.
+
+```
+# for EV9
+
+bash run_multi_nav_EV9.bash
+
+# For Empty World
+
+bash run_multi_nav_empty_world.bash
+```
+
+And then the project will be running
 ### Main Terminal
 
 First cd into turtlebot3_multi_robot
