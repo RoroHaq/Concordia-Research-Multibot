@@ -18,8 +18,6 @@ echo "Model transfer done!"
 
 cleanup() {
     echo "Cleaning up..."
-    # xdotool search --name "$TITLE1" windowkill 2>/dev/null
-    # xdotool search --name "$TITLE2" windowkill 2>/dev/null
     pkill -f "$TITLE1"
     pkill -f "$TITLE2"
     echo "Script exiting..."
