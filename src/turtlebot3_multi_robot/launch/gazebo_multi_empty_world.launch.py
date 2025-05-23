@@ -65,14 +65,13 @@ def generate_launch_description():
     
     turtlebot3_multi_robot = get_package_share_directory('turtlebot3_multi_robot')
 
-    package_dir = get_package_share_directory('turtlebot3_multi_robot')
-    nav_launch_dir = os.path.join(package_dir, 'launch', 'nav2_bringup')
+    nav_launch_dir = os.path.join(turtlebot3_multi_robot, 'launch', 'nav2_bringup')
 
     rviz_config_file = LaunchConfiguration('rviz_config_file')
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
         'rviz_config_file',
         default_value=os.path.join(
-            package_dir, 'rviz', 'multi_nav2_default_view.rviz'),
+            turtlebot3_multi_robot, 'rviz', 'multi_nav2_default_view.rviz'),
         description='Full path to the RVIZ config file to use')
 
     urdf = os.path.join(
@@ -110,7 +109,7 @@ def generate_launch_description():
     params_file = LaunchConfiguration('nav_params_file')
     declare_params_file_cmd = DeclareLaunchArgument(
         'nav_params_file',
-        default_value=os.path.join(package_dir, 'params', 'nav2_params.yaml'),
+        default_value=os.path.join(turtlebot3_multi_robot, 'params', 'nav2_params.yaml'),
         description='Full path to the ROS2 parameters file to use for all launched nodes')
     
      
