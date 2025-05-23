@@ -65,6 +65,8 @@ def generate_launch_description():
     
     turtlebot3_multi_robot = get_package_share_directory('turtlebot3_multi_robot')
 
+    gazebo_ros = get_package_share_directory('gazebo_ros')
+
     nav_launch_dir = os.path.join(turtlebot3_multi_robot, 'launch', 'nav2_bringup')
 
     rviz_config_file = LaunchConfiguration('rviz_config_file')
@@ -79,32 +81,22 @@ def generate_launch_description():
     )
 
     world = os.path.join(
-        get_package_share_directory('turtlebot3_multi_robot'),
+        turtlebot3_multi_robot,
         'worlds', 'multi_empty_world.world')
 
     gzserver_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')
+            os.path.join(gazebo_ros, 'launch', 'gzserver.launch.py')
         ),
         launch_arguments={'world': world}.items(),
     )
 
     gzclient_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzclient.launch.py')
+            os.path.join(gazebo_ros, 'launch', 'gzclient.launch.py')
         ),
     )
 
-    # gz_sim_cmd = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource([
-    #         PathJoinSubstitution([
-    #             FindPackageShare('ros_gz_sim'),
-    #             'launch',
-    #             'gz_sim.launch.py'
-    #         ])
-    #     ]),
-    #     launch_arguments={'world' : f'-r {world}'}.items(),
-    # )
 
     params_file = LaunchConfiguration('nav_params_file')
     declare_params_file_cmd = DeclareLaunchArgument(
@@ -118,7 +110,6 @@ def generate_launch_description():
     ld.add_action(declare_enable_rviz)
     ld.add_action(declare_rviz_config_file_cmd)
     ld.add_action(declare_params_file_cmd)
-    # ld.add_action(gz_sim_cmd)
     ld.add_action(gzserver_cmd)
     ld.add_action(gzclient_cmd)
     remappings = [('/tf', 'tf'),
@@ -136,7 +127,7 @@ def generate_launch_description():
             executable='map_server',
             name='map_server',
             output='screen',
-            parameters=[{'yaml_filename': os.path.join(get_package_share_directory('turtlebot3_multi_robot'), 'config', 'blank_map.yaml'),}],  
+            parameters=[{'yaml_filename': os.path.join(turtlebot3_multi_robot, 'config', 'blank_map.yaml'),}],  
             remappings=remappings
     )
         #map_file = os.path.join(get_package_share_directory('nav2_project'), 'config', 'turtlebot3_house.yaml')
