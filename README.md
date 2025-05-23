@@ -75,7 +75,7 @@ bash run_multi_nav_empty_world.bash
 ```
 
 And then the project will be running
-## Mnaually Done
+## Manually Done
 ### Main Terminal
 
 First cd into turtlebot3_multi_robot
