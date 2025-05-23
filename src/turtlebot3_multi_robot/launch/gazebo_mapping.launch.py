@@ -52,6 +52,8 @@ def generate_launch_description():
 
     package_dir = get_package_share_directory('turtlebot3_multi_robot')
 
+    gazebo_ros = get_package_share_directory('gazebo_ros')
+
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
         'rviz_config_file',
         default_value=os.path.join(
@@ -68,14 +70,14 @@ def generate_launch_description():
 
     gzserver_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzserver.launch.py')
+            os.path.join(gazebo_ros, 'launch', 'gzserver.launch.py')
         ),
         launch_arguments={'world': world}.items(),
     )
 
     gzclient_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzclient.launch.py')
+            os.path.join(gazebo_ros, 'launch', 'gzclient.launch.py')
         ),
     )
 
@@ -159,11 +161,6 @@ def generate_launch_description():
         'online_async_launch.py'
     )
 
-    params_file_path = os.path.join(
-    get_package_share_directory('turtlebot3_multi_robot'),
-    'params',
-    'mapper_params_online_async.yaml'
-    )
     # , 'slam_params_file': params_file_path
     slam_tool_box = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(async_launch_path),
