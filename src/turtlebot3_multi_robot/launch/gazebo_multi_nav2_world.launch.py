@@ -19,10 +19,11 @@ import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, RegisterEventHandler
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch.actions import IncludeLaunchDescription, ExecuteProcess
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
 from launch.event_handlers import OnProcessExit
 from launch.conditions import IfCondition
 import launch.logging
@@ -39,7 +40,7 @@ def generate_launch_description():
         {'name': 'tb5', 'x_pose': '-2.5', 'y_pose': '1', 'z_pose': 0.01},
 
 
-        #{'name': 'tb4', 'x_pose': '1.5', 'y_pose': '0.5', 'z_pose': 0.01},
+        #{'name': 'tb4', 'x_pose': '10', 'y_pose': '0.5', 'z_pose': 0.01},
         # ...
         # ...
         ]
@@ -64,14 +65,13 @@ def generate_launch_description():
     
     turtlebot3_multi_robot = get_package_share_directory('turtlebot3_multi_robot')
 
-    package_dir = get_package_share_directory('turtlebot3_multi_robot')
-    nav_launch_dir = os.path.join(package_dir, 'launch', 'nav2_bringup')
+    nav_launch_dir = os.path.join(turtlebot3_multi_robot, 'launch', 'nav2_bringup')
 
     rviz_config_file = LaunchConfiguration('rviz_config_file')
     declare_rviz_config_file_cmd = DeclareLaunchArgument(
         'rviz_config_file',
         default_value=os.path.join(
-            package_dir, 'rviz', 'multi_nav2_default_view.rviz'),
+            turtlebot3_multi_robot, 'rviz', 'multi_nav2_default_view.rviz'),
         description='Full path to the RVIZ config file to use')
 
     urdf = os.path.join(
@@ -80,7 +80,7 @@ def generate_launch_description():
 
     world = os.path.join(
         get_package_share_directory('turtlebot3_multi_robot'),
-        'worlds', 'multi_empty_world.world')
+        'worlds', 'ev_9.world')
 
     gzserver_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -95,10 +95,11 @@ def generate_launch_description():
         ),
     )
 
+
     params_file = LaunchConfiguration('nav_params_file')
     declare_params_file_cmd = DeclareLaunchArgument(
         'nav_params_file',
-        default_value=os.path.join(package_dir, 'params', 'nav2_params.yaml'),
+        default_value=os.path.join(turtlebot3_multi_robot, 'params', 'nav2_params.yaml'),
         description='Full path to the ROS2 parameters file to use for all launched nodes')
     
      
@@ -124,7 +125,7 @@ def generate_launch_description():
             executable='map_server',
             name='map_server',
             output='screen',
-            parameters=[{'yaml_filename': os.path.join(get_package_share_directory('turtlebot3_multi_robot'), 'config', 'my_map.yaml'),}],  
+            parameters=[{'yaml_filename': os.path.join(get_package_share_directory('turtlebot3_multi_robot'), 'config', 'EVfloor-Floor-Plan-Level-1.yaml'),}],  
             remappings=remappings
     )
         #map_file = os.path.join(get_package_share_directory('nav2_project'), 'config', 'turtlebot3_house.yaml')
@@ -152,7 +153,6 @@ def generate_launch_description():
     for robot in robots:
 
         namespace = [ '/' + robot['name'] ]
-
         # Create state publisher node for that instance
         turtlebot_state_publisher = Node(
             package='robot_state_publisher',
@@ -160,7 +160,7 @@ def generate_launch_description():
             executable='robot_state_publisher',
             output='screen',
             parameters=[{'use_sim_time': use_sim_time,
-                            'publish_frequency': 10.0}],
+                            'publish_frequency': 10.0,}],
             remappings=remappings,
             arguments=[urdf],
         )
